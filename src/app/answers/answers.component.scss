@@ -1,0 +1,20 @@
+.answers {
+  display: flex;
+  gap: 2rem;
+
+  &__answer {
+    background-color: whitesmoke;
+    border: 1px solid gray;
+    border-radius: 12px;
+
+    padding: 12px;
+
+    h2 {
+      margin: 0;
+    }
+
+    h3 {
+      margin-bottom: 0;
+    }
+  }
+}

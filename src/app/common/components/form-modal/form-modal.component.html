@@ -1,0 +1,72 @@
+<h2 mat-dialog-title>Form</h2>
+<mat-dialog-content class="modal">
+  <form class="modal__form" *ngIf="!isQuestionFormBuilder()">
+    <mat-form-field>
+      <mat-label for="title">Title</mat-label>
+      <input matInput type="text" id="title" [formControl]="title" />
+      @if (title.errors?.['required']) {
+      <mat-error>Title is <strong>required</strong></mat-error>
+      } @if (title.errors?.['maxlength']) {
+      <mat-error>Title too long</mat-error>
+      }
+    </mat-form-field>
+  </form>
+
+  <div *ngIf="isQuestionFormBuilder()" class="modal__select-type">
+    <button
+      mat-raised-button
+      [color]="questionType() === 'textarea' ? 'warn' : 'primary'"
+      (click)="setQuestionType('textarea')"
+    >
+      Add question
+    </button>
+    <button
+      mat-raised-button
+      [color]="questionType() === 'checkbox' ? 'warn' : 'primary'"
+      (click)="setQuestionType('checkbox')"
+    >
+      Add checkbox list
+    </button>
+  </div>
+
+  <div *ngIf="!isQuestionFormBuilder()">
+    <div *ngFor="let question of questionService.selectedForm()?.questions">
+      <app-dynamic-form [question]="question" [form]="form" />
+    </div>
+  </div>
+
+  <app-question-form
+    *ngIf="questionType() === 'textarea'"
+    [formTitle]="title.getRawValue()"
+  />
+  <app-checkbox-form
+    *ngIf="questionType() === 'checkbox'"
+    [formTitle]="title.getRawValue()"
+  />
+
+  <div class="modal__actions">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="toggleShowQuestionForm()"
+      [disabled]="!title.valid"
+    >
+      {{ isQuestionFormBuilder() ? "Show form" : "Add new question" }}
+    </button>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close routerLink="/form/answers">
+    Review my answers
+  </button>
+
+  <button
+    type="submit"
+    mat-raised-button
+    color="primary"
+    [disabled]="form ? !form.valid : false || !title.valid"
+    (click)="onSubmit()"
+  >
+    Save answers
+  </button>
+</mat-dialog-actions>

@@ -1,1 +1,11 @@
-<p>form-builder works!</p>
+<button mat-raised-button color="primary" (click)="openDialog()">
+  Add Form
+</button>
+
+<div class="questions">
+  <div *ngFor="let question of questionsService.questionForms()">
+    <button mat-button color="warn" (click)="openDialog(question.id)">
+      {{ question.label }}
+    </button>
+  </div>
+</div>

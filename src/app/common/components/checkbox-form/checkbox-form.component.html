@@ -1,0 +1,55 @@
+<form [formGroup]="form" class="checkbox-form" (ngSubmit)="onSubmit()">
+  <mat-form-field>
+    <mat-label for="question">Question</mat-label>
+    <input matInput type="text" id="question" formControlName="question" />
+
+    @if (form.get('question')?.errors?.['required']) {
+    <mat-error>Question is <strong>required</strong></mat-error>
+    } @if (form.get('question')?.errors?.['maxlength']) {
+    <mat-error>Question too long</mat-error>
+    }
+  </mat-form-field>
+
+  <div formArrayName="options">
+    <ng-container *ngFor="let option of options.controls; let i = index">
+      <div [formGroupName]="i">
+        <mat-form-field appearance="fill">
+          <input matInput formControlName="title" placeholder="" />
+
+          @if (form.get('title')?.errors?.['required']) {
+          <mat-error>Question is <strong>required</strong></mat-error>
+          }
+        </mat-form-field>
+
+        <button mat-icon-button color="warn" (click)="deleteOption(i)">
+          <mat-icon>delete_forever</mat-icon>
+        </button>
+      </div>
+    </ng-container>
+  </div>
+
+  <button
+    type="button"
+    mat-raised-button
+    color="primary"
+    (click)="addOption()"
+    [disabled]="options.length >= 5"
+  >
+    Add option
+  </button>
+
+  <section>
+    <mat-checkbox formControlName="required" color="primary"
+      >Required</mat-checkbox
+    >
+  </section>
+
+  <button
+    type="submit"
+    mat-raised-button
+    color="primary"
+    [disabled]="!form.valid || !options.length"
+  >
+    Add list
+  </button>
+</form>

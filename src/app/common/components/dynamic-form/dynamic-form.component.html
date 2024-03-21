@@ -1,0 +1,27 @@
+<div *ngIf="form" [formGroup]="form" class="form">
+  <label [attr.for]="question.key" class="form__label"
+    >{{ question.label }} {{ question.required ? "*" : "" }}</label
+  >
+
+  <div [ngSwitch]="question.controlType">
+    <mat-form-field *ngSwitchCase="'textarea'">
+      <textarea
+        matInput
+        [formControlName]="question.key"
+        [id]="question.key"
+      ></textarea>
+      @if(!isValid) {
+      <mat-error>Field is required</mat-error>
+      }
+    </mat-form-field>
+
+    <section *ngSwitchCase="'checkbox'" [formArrayName]="question.key">
+      <p *ngFor="let option of question.options; let i = index">
+        <mat-checkbox [formControlName]="i">{{ option.title }}</mat-checkbox>
+      </p>
+      @if(!isValid) {
+      <mat-error>One option required</mat-error>
+      }
+    </section>
+  </div>
+</div>

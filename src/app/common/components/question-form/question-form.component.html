@@ -1,0 +1,27 @@
+<form [formGroup]="questionForm" (ngSubmit)="onSubmit()" class="question-form">
+  <mat-form-field>
+    <mat-label for="question">Question</mat-label>
+    <input matInput type="text" id="question" formControlName="question" />
+
+    @if (question?.errors?.['required']) {
+    <mat-error>Question is <strong>required</strong></mat-error>
+    } @if (question?.errors?.['maxlength']) {
+    <mat-error>Question too long</mat-error>
+    }
+  </mat-form-field>
+
+  <section>
+    <mat-checkbox formControlName="required" color="primary"
+      >Required</mat-checkbox
+    >
+  </section>
+
+  <button
+    type="submit"
+    mat-raised-button
+    color="primary"
+    [disabled]="!questionForm.valid"
+  >
+    Add
+  </button>
+</form>
